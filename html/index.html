@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lawson Aquatic Center Schedule</title>
+    <title>Lawson Center Schedule</title>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style>
@@ -20,52 +20,68 @@
             font-weight: 900;
         }
     </style>
-    <script>
-        const TIMER_SECONDS = 30;
-
-        var dayOfWeek = 1;
-
-        setInterval(function() {
-            dayOfWeek += 1;
-            if (dayOfWeek > 7) {
-                dayOfWeek = 1;
-            }
-
-            let day = '';
-            switch (dayOfWeek) {
-                case 1:
-                    day = "Monday";
-                    break;
-                case 2:
-                    day = "Tuesday";
-                    break;
-                case 3:
-                    day = "Wednesday";
-                    break;
-                case 4:
-                    day = "Thursday";
-                    break;
-                case 5:
-                    day = "Friday";
-                    break;
-                case 6:
-                    day = "Saturday";
-                    break;
-                case 7:
-                    day = "Sunday";
-                    break;
-            }
-
-            var image = document.getElementById("image");
-            var dayText = document.getElementById("dayText");
-
-            image.src = `/api/v1/lawson/aquatic/${day}`;
-            dayText.innerHTML = day;
-        }, TIMER_SECONDS * 1000);
-    </script>
 </head>
 <body>
     <h1 id="dayText">Monday</h1>
     <img id="image" src="/api/v1/lawson/aquatic/Monday" style="height: 100%; width: auto;" />
+
+    <script>
+            const TIMER_SECONDS = 5;
+            let locationRequested = 'aquatic';
+
+            var dayOfWeek = 1;
+            var params = window.location.search;
+            var locationParam = params.split('location=');
+
+            if (locationParam.length > 1) {
+                locationRequested = locationParam[1];
+                var image = document.getElementById("image");
+                image.src = `/api/v1/lawson/${locationRequested}/Monday`;
+
+                if (locationRequested === 'fieldhouse') {
+                    dayText.innerHTML = '';
+                }
+            }
+
+            setInterval(function() {
+                dayOfWeek += 1;
+                if (dayOfWeek > 7) {
+                    dayOfWeek = 1;
+                }
+
+                let day = '';
+                switch (dayOfWeek) {
+                    case 1:
+                        day = "Monday";
+                        break;
+                    case 2:
+                        day = "Tuesday";
+                        break;
+                    case 3:
+                        day = "Wednesday";
+                        break;
+                    case 4:
+                        day = "Thursday";
+                        break;
+                    case 5:
+                        day = "Friday";
+                        break;
+                    case 6:
+                        day = "Saturday";
+                        break;
+                    case 7:
+                        day = "Sunday";
+                        break;
+                }
+
+                var image = document.getElementById("image");
+                var dayText = document.getElementById("dayText");
+
+                image.src = `/api/v1/lawson/${locationRequested}/${day}`;
+                if (locationRequested !== 'fieldhouse') {
+                    dayText.innerHTML = day;
+                }
+            }, TIMER_SECONDS * 1000);
+        </script>
 </body>
 </html>
